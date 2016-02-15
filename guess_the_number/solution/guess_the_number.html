@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Guess The Number</title>
+  <script type="text/javascript">
+  // Function:
+  //   Get random number - when called, a random integer between
+  //     the 'min_value' and 'max_value' arguments will be returned.
+  // Input(s):
+  //   min_value - Minimum number to be returned
+  //   max_value - Maximum number to be returned
+  // Return:
+  //   random_number - Randomly generated number
+  function get_random_number(min_value, max_value) {
+    var random_number = Math.floor(Math.random() * (max_value - min_value + 1)) + min_value
+    return random_number
+  }
+
+  //// Start The Game ////
+
+  // 1. Generate a random number (between 1 and 100)
+  var random_number = get_random_number(1, 100)
+
+  // 2. Initialize variable to store number of guesses used (starts at '0')
+  var number_of_guesses = 0
+
+  // 3. Initialize boolean to store whether the user guessed correctly (starts at 'false')
+  var guessed_correctly = false
+
+  // 4. Start Game Loop (break if 'guessed_correctly' becomes 'true')
+  while(guessed_correctly == false) {
+
+    // 5a. Prompt user for guess
+    var users_guess = prompt("Guess The Number (Between 1 - 100): ")
+
+    // 5b. Check if the user is trying to quit (They typed: 'Quit')
+    if(users_guess == "Quit") {
+      alert("User Quit.")
+      throw new Error("User Quit.")
+    }
+    
+    // 6. Increment 'number_of_guesses' (to keep track of the user's guess count)
+    number_of_guesses = number_of_guesses + 1
+
+    // 7. Check the user's guess (against the answer)
+    if(users_guess == random_number) {
+      // If we made it inside this 'if statement',
+      //   the user guessed correctly, set 'guessed_correctly'
+      //   to 'true'
+      guessed_correctly = true
+    }
+    else if(users_guess != random_number) {
+      // If we made it inside this 'else if statement',
+      //   the user guessed wrong. Let's give them a hint
+      if(users_guess > random_number) {
+        // The user's guess was too HIGH, tell them
+        alert("Your guess was too high.")
+      }
+      else if(users_guess < random_number) {
+        // The user's guess was too LOW, tell them
+        alert("Your guess was too low.")
+      }
+      else {
+      	// The user didn't enter a comparable number, tell them
+        alert("That wasn't a number, please check your input")
+      }
+    }
+  } // END OF GAME LOOP
+	
+  // The Loop was broken (this means the user won - congratulate them)
+  document.write("Congratulations!<br />You won with <b>" + number_of_guesses + "</b> tries!")
+  </script>
+</head>
+<body>
+</body>
+</html>

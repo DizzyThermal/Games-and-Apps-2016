@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Black Jack</title>
+  <script type="text/javascript">
+  // Function:
+  //   Get random number - when called, a random integer between
+  //     the 'min_value' and 'max_value' arguments will be returned.
+  // Input(s):
+  //   min_value - Minimum number to be returned
+  //   max_value - Maximum number to be returned
+  // Return:
+  //   random_number - Randomly generated number
+  function get_random_number(min_value, max_value) {
+    var random_number = Math.floor(Math.random() * (max_value - min_value + 1)) + min_value
+    return random_number
+  }
+
+  // Function:
+  //   Get value of card - when called, the 'letter' passed
+  //     will be transformed to an integer value to return
+  // Input(s):
+  //   letter - Card letter value
+  // Return:
+  //   integer - Value of letter passed
+  function get_value_of_card(letter) {
+  	if(letter == 'A') {
+  		// Ace = 1
+  		return 1
+  	}
+  	else if(letter == 'J' ||
+  		    letter == 'Q' ||
+  		    letter == 'K') {
+  		// Jack, Queen, and King = 10
+  		return 10
+  	}
+  	else {
+  		// 'Parse' letter and return value
+  		return parseInt(letter)
+  	}
+  }
+
+  // Function:
+  //   Check if either score is over '21'
+  // Input(s):
+  //   score_1 - Player's score
+  //   score_2 - Computer's score
+  // Return:
+  //   boolean - True or False (Game over or not)
+  function is_game_over(score_1, score_2) {
+  	if(score_1 > 21 || score_2 > 21) {
+  		// If either player is over '21', game over
+  		return true
+  	}
+  	else {
+  		return false
+  	}
+  }
+
+  //// Start The Game ////
+  
+  // 1. Initialize variables (4 of each card - 1 for each Suit)
+  //    Deck of cards (values):
+  //      A = 1    5 = 5     9 = 9     K = 10
+  //      2 = 2    6 = 6    10 = 10
+  //      3 = 3    7 = 7     J = 10
+  //      4 = 4    8 = 8     Q = 10
+  var deck_of_cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K",
+  					   "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K",
+  					   "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K",
+  					   "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+  var player_score = 0
+  var computer_score = 0
+  var game_over = false
+
+  // 2. Start game loop
+  while(game_over == false) {
+  	// While no one has won, play game
+
+    // Check if either player "Hit"
+    var someone_hit = false
+
+  	// 3. Print out scores
+  	alert("Your score: " + player_score + "\nComputer's score: " + computer_score)
+
+  	// 4. Prompt user for move (keep prompting until valid move entered (1 or 2))
+  	var valid_move = false
+  	while(valid_move == false) {
+	    var move = prompt("Choose Move:\n [1] Hit\n [2] Stand")
+
+	    // Check user's move
+	    if(move == "1" || move == "2") {
+	      // If they user entered a '1' or '2', valid move
+	      valid_move = true
+	    }
+	}
+
+    // 5. Execute user's Move
+    if(move == "1") {
+    	// User 'Hit'
+
+    	// Get a random card from deck (0 to length of deck minus 1)
+    	var index_of_card = get_random_number(0, (deck_of_cards.length - 1))
+
+    	// Get value of this card (pass letter to 'get_value_of_card' function)
+    	var value_of_card = get_value_of_card(deck_of_cards[index_of_card])
+
+    	// Remove card from deck (Remove item from array)
+    	//   Source: https://davidwalsh.name/remove-item-array-javascript
+    	deck_of_cards.splice(index_of_card, 1)
+
+    	// Add value to player's score
+    	player_score = player_score + value_of_card
+
+        // Record that 'someone_hit'
+        someone_hit = true
+
+        // Check if someone went over
+    	game_over = is_game_over(player_score, computer_score)
+    	if(game_over) {
+    		// If game_over (player went over, break game loop)
+    		break;
+    	}
+    }
+    
+    // 6. Computer's Turn (if game isn't over and computer_score < 16)
+    if(game_over == false || computer_score < 16) {
+    	// Get a random card from deck (0 to length of deck minus 1)
+    	var index_of_card = get_random_number(0, (deck_of_cards.length - 1))
+
+    	// Get value of this card (pass letter to 'get_value_of_card' function)
+    	var value_of_card = get_value_of_card(deck_of_cards[index_of_card])
+
+    	// Remove card from deck (Remove item from array)
+    	//   Source: https://davidwalsh.name/remove-item-array-javascript
+    	deck_of_cards.splice(index_of_card, 1)
+
+    	// Add value to computer's score
+    	computer_score = computer_score + value_of_card
+
+        // Record that 'someone_hit'
+        someone_hit = true
+
+        // Check if someone went over
+    	game_over = is_game_over(player_score, computer_score)
+    	if(game_over) {
+    		// If game_over (computer went over, break game loop)
+    		break;
+    	}
+    }
+
+    // Check if someone_hit this round?
+    if(someone_hit == false) {
+    	// No one hit, end game
+    	game_over = true
+    }
+  } // END OF GAME LOOP
+	
+  // Loops broken, game over - print results
+  if(computer_score > 21 || (player_score > computer_score && player_score <= 21)) {
+  	// Player won!
+  	document.write("You won!<br /><br />Congratulations!<br /><br />Your score: " + player_score + "<br />Computer's score: " + computer_score)
+  }
+  else if(player_score > 21 || (computer_score > player_score && computer_score <= 21)) {
+    // Computer won!
+    document.write("You lost!<br /><br />Maybe next time.<br /><br />Your score: " + player_score + "<br />Computer's score: " + computer_score)
+  }
+  else if(player_score == computer_score) {
+    // Draw
+    document.write("Draw!<br /><br />Refresh page to try again.<br /><br />Your score: " + player_score + "<br />Computer's score: " + computer_score)
+  }
+  </script>
+</head>
+<body>
+</body>
+</html>

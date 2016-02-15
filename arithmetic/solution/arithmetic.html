@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Arithmetic</title>
+  <script type="text/javascript">
+  // Function:
+  //   Get random number - when called, a random integer between
+  //     the 'min_value' and 'max_value' arguments will be returned.
+  // Input(s):
+  //   min_value - Minimum number to be returned
+  //   max_value - Maximum number to be returned
+  // Return:
+  //   random_number - Randomly generated number
+  function get_random_number(min_value, max_value) {
+    var random_number = Math.floor(Math.random() * (max_value - min_value + 1)) + min_value
+    return random_number
+  }
+
+  //// Start The Game ////
+
+  // 1. Get the game difficulty (from the user)
+  var valid_difficulty = false
+  while(valid_difficulty == false) {
+    // Prompt for the user to enter difficulty (1, 2, or 3)
+    var difficulty = prompt("Enter Difficulty:\n [1] Easy\n [2] Medium\n [3] Hard")
+
+    // Check if they entered 1, 2, or 3 (otherwise, reprompt)
+    if(difficulty == "1") {
+      // Easy Difficulty
+      var lowest_number = 1
+      var highest_number = 10
+      valid_difficulty = true
+    }
+    else if(difficulty == "2") {
+      // Medium Difficulty
+      var lowest_number = 10
+      var highest_number = 100
+      valid_difficulty = true
+    }
+    else if(difficulty == "3") {
+      // Hard Difficulty
+      var lowest_number = 100
+      var highest_number = 1000
+      valid_difficulty = true
+    }
+  }
+  
+  // 2. Initialize variables
+  var number_right = 0			// Number user got right
+  var number_wrong = 0			// Number user got wrong
+  var number_of_rounds = 10		// Number of rounds to play
+
+  // 3. Start game loop
+  while(number_of_rounds > 0) {
+  	// 4. Generate two numbers
+    var first_number = get_random_number(lowest_number, highest_number)
+    var second_number = get_random_number(lowest_number, first_number)
+    
+    // 5. Determine if we're 'adding' or 'subtracting'
+    //   0 = plus, 1 = minus
+    var plus_or_minus = get_random_number(0, 1)
+    if(plus_or_minus == 0) {
+      // We're 'adding'
+      var op = "+"
+    }
+    else {
+      // We're 'subtracting'
+      var op = "-"
+    }
+
+    // 6. Prompt user with math question (e.g.: 8 + 5 = ?: )
+    var users_answer = prompt(first_number + " " + op + " " + second_number + " = ?:")
+    
+    // 7. Do 'actual' arithmetic
+    if(plus_or_minus == 0) {
+      // Real answer = 'first_number' plus 'second_number'
+      var real_answer = first_number + second_number
+    }
+    else {
+      // Real answer = 'first_number' minus 'second_number'
+      var real_answer = first_number - second_number
+    }
+
+    // 8. Check if 'users_answer' equals 'real_answer'
+    if(users_answer == (real_answer)) {
+      // It's equal, add to 'number_right'
+      number_right = number_right + 1
+    }
+    else {
+      // It's NOT equal, add to 'number_wrong'
+      number_wrong = number_wrong + 1
+    }
+    
+    // Decrement 'number_of_rounds'
+    number_of_rounds = number_of_rounds - 1
+  } // END OF GAME LOOP
+	
+  // Loops broken, game over - print results
+  document.write("Right Answers: " + number_right + "<br />Wrong Answers: " + number_wrong + "<br /><br />Thanks for Playing!")
+  </script>
+</head>
+<body>
+</body>
+</html>
